@@ -1,14 +1,14 @@
-import { ProjectType } from '@nrwl/workspace/src/core/project-graph';
-import { cyan, green, magenta, red, yellow } from 'colors';
-import { ConfirmQuestion, prompt } from 'inquirer';
+import { ProjectType } from '@nrwl/workspace/src/core/project-graph/project-graph-models';
+import * as colors from 'colors';
+import * as inquirer from 'inquirer';
 import * as yargs from 'yargs';
 import { checkoutInteractive } from './interactive-checkout';
 import { isProject, projectNodes } from './nrwl-utils';
 
-const good = green;
-const bad = magenta;
-const goodAccent = cyan;
-const badAccent = red;
+const good = colors.green;
+const bad = colors.magenta;
+const goodAccent = colors.cyan;
+const badAccent = colors.red;
 
 const createConfirmQuestion = ({
     from,
@@ -20,7 +20,7 @@ const createConfirmQuestion = ({
     to: string;
     messageFrom?: string;
     messageTo?: string;
-}): ConfirmQuestion => {
+}): inquirer.ConfirmQuestion => {
     const message = `Did you mean the app ${messageTo} instead of ${messageFrom}`;
 
     return {
@@ -31,7 +31,7 @@ const createConfirmQuestion = ({
     };
 }
 
-const suggestAppInsteadOfE2e = (projectName: string): ConfirmQuestion => {
+const suggestAppInsteadOfE2e = (projectName: string): inquirer.ConfirmQuestion | null => {
     const possibleName = projectName.slice(0, -4);
     const possibleApp = projectNodes.find(p => p.name === possibleName && p.type === ProjectType.app);
     return possibleApp ?
@@ -43,7 +43,7 @@ const suggestAppInsteadOfE2e = (projectName: string): ConfirmQuestion => {
         }) : null;
 }
 
-const suggestAppInsteadOfLib = (projectName: string): ConfirmQuestion => {
+const suggestAppInsteadOfLib = (projectName: string): inquirer.ConfirmQuestion | null => {
     const splittedName = projectName.split('-');
     const possibleApps = splittedName
         .slice(1)
@@ -55,7 +55,7 @@ const suggestAppInsteadOfLib = (projectName: string): ConfirmQuestion => {
         .map(possibleName => projectNodes.find(p => p.name === possibleName && p.type === ProjectType.app))
         .filter(possibleApp => !!possibleApp);
     if (possibleApps.length) {
-        const possibleName = possibleApps[0].name;
+        const possibleName = possibleApps[0]!.name;
         return createConfirmQuestion({
             from: projectName,
             to: possibleName,
@@ -73,12 +73,12 @@ function generateDidYouMeanQuestions(projectNames: string[]) {
     return projectNames
         .map(projectName => projectNodes.find(p => p.name === projectName))
         .map(project => {
-            switch (project.type) {
+            switch (project!.type) {
                 case ProjectType.e2e: {
-                    return suggestAppInsteadOfE2e(project.name);
+                    return suggestAppInsteadOfE2e(project!.name);
                 }
                 case ProjectType.lib: {
-                    return suggestAppInsteadOfLib(project.name);
+                    return suggestAppInsteadOfLib(project!.name);
                 }
                 default:
                     return null;
@@ -99,12 +99,12 @@ export const checkoutProjectsByName = async (args: yargs.Arguments): Promise<str
         .filter(term => !!term);
     if (terms.length || args.i) {
         if (!args.i) {
-            console.log(yellow('The following names are not found as projects:'), nonExistingProjectNames);
-            console.log(yellow('Going interactive...'));
+            console.log(colors.yellow('The following names are not found as projects:'), nonExistingProjectNames);
+            console.log(colors.yellow('Going interactive...'));
         }
         return await checkoutInteractive(args, existingProjectNames, terms);
     } else {
-        return await prompt(generateDidYouMeanQuestions(existingProjectNames)).then(answers => {
+        return await inquirer.prompt(generateDidYouMeanQuestions(existingProjectNames)).then(answers => {
             Object.keys(answers)
                 .filter(key => !!answers[key])
                 .forEach(concattedNames => {

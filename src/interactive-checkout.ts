@@ -1,6 +1,7 @@
-import { ProjectGraphNode, ProjectType } from '@nrwl/workspace/src/core/project-graph';
-import { yellow } from 'colors';
-import { CheckboxQuestion, prompt, Separator } from 'inquirer';
+import { ProjectGraphNode } from '@nrwl/workspace/src/core/project-graph';
+import { ProjectType } from '@nrwl/workspace/src/core/project-graph/project-graph-models';
+import * as colors from 'colors';
+import * as inquirer from 'inquirer';
 import * as yargs from 'yargs';
 import { projectNodes } from './nrwl-utils';
 
@@ -8,7 +9,7 @@ function generateChoiceGroup(name: string, projects: ProjectGraphNode[], selecte
     return !projects.length
         ? []
         : [
-            new Separator(name),
+            new inquirer.Separator(name),
             ...projects.map(p => ({
                 name: `${p.type}\t${p.name}`,
                 value: p.name,
@@ -17,13 +18,11 @@ function generateChoiceGroup(name: string, projects: ProjectGraphNode[], selecte
         ];
 }
 
-const generateSelectionList = (selected: string[] = [], terms: string[] = [], all: boolean = false): CheckboxQuestion[] => {
+const generateSelectionList = (selected: string[] = [], terms: string[] = [], all: boolean = false): inquirer.CheckboxQuestion[] => {
     let regExp: RegExp;
     try {
         regExp = new RegExp(terms.concat(selected).join('|'), 'i');
-    } catch {
-        regExp = null;
-    }
+    } catch {}
     let selectableProjects = projectNodes.filter(p => !terms.length || !regExp || regExp.test(p.name));
     if (!selectableProjects.length) {
         selectableProjects = projectNodes;
@@ -47,13 +46,13 @@ const generateSelectionList = (selected: string[] = [], terms: string[] = [], al
 
 export const checkoutInteractive = async (args: yargs.Arguments, selected: string[] = [], terms: string[] = []): Promise<string[]> => {
     const selectionList = generateSelectionList(selected, terms, !!args.a);
-    return await prompt(selectionList).then(answers => {
+    return await inquirer.prompt(selectionList).then(answers => {
         if (answers.projectNames.length === projectNodes.length) {
             return [];
         } else if (!!answers.projectNames.length) {
             return answers.projectNames;
         } else {
-            console.log(yellow('Nothing selected, try again!'));
+            console.log(colors.yellow('Nothing selected, try again!'));
             return checkoutInteractive(args, selected, terms);
         }
     });

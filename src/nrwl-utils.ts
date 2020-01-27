@@ -1,6 +1,7 @@
 import { getProjectNodes, getProjectRoots } from '@nrwl/workspace/src/command-line/shared';
 import { readNxJson, readWorkspaceJson } from '@nrwl/workspace/src/core/file-utils';
-import { createProjectGraph, ProjectType } from '@nrwl/workspace/src/core/project-graph';
+import { createProjectGraph } from '@nrwl/workspace/src/core/project-graph';
+import { ProjectType } from '@nrwl/workspace/src/core/project-graph/project-graph-models';
 import { NxJson } from '@nrwl/workspace/src/core/shared-interfaces';
 
 const nxJson: NxJson = readNxJson();

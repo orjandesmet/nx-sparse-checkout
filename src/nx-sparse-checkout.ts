@@ -1,4 +1,4 @@
-import { cyan, green, red, yellow } from 'colors';
+import * as colors from 'colors';
 import * as yargs from 'yargs';
 import { doCheckout, isGitStatusClean, isSparseCheckoutEnabled } from './git-utils';
 import { checkoutInteractive } from './interactive-checkout';
@@ -7,14 +7,14 @@ import { concatWithDependencies, getExcludedProjectRoots } from './nrwl-utils';
 
 async function runNxSparseCheckout(args: yargs.Arguments) {
   if (!isGitStatusClean()) {
-    console.log(red('You have unstaged changes. Stash or commit them first.'));
+    console.log(colors.red('You have unstaged changes. Stash or commit them first.'));
     process.exit(1);
   }
   if (!isSparseCheckoutEnabled()) {
     console.log(
-      `${red('Sparse checkout is not enabled. Enable it with ')}'${yellow(
+      `${colors.red('Sparse checkout is not enabled. Enable it with ')}'${colors.yellow(
         'git config core.sparseCheckout true'
-      )}${red("'")}`
+      )}${colors.red("'")}`
     );
     process.exit(1);
   }
@@ -30,8 +30,8 @@ async function runNxSparseCheckout(args: yargs.Arguments) {
 
   if (projectNames.length) {
     console.log(
-      `Checking out the following ${green('' + projectNames.length)} projects:\n${projectNames
-        .map(projectName => '* ' + cyan(projectName))
+      `Checking out the following ${colors.green('' + projectNames.length)} projects:\n${projectNames
+        .map(projectName => '* ' + colors.cyan(projectName))
         .join('\n')}`
     );
   } else {

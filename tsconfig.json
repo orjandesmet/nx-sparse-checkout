@@ -3,27 +3,29 @@
     "compilerOptions": {
         "importHelpers": true,
         "sourceMap": true,
-        "declaration": false,
+        "declaration": true,
         "moduleResolution": "node",
         "resolveJsonModule": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "target": "es2015",
+        "module": "es2015",
         "lib": [
+            "es2015",
+            "es2016",
             "es2017",
             "dom"
         ],
-        "baseUrl": ".",
-        "rootDir": "src",
-        "module": "commonjs",
         "types": [
             "node"
         ],
-        "outDir": "dist"
+        "outDir": "dist/lib",
+        "declarationDir": "dist/types",
+        "strict": true
     },
     "include": [
-        "**/*.ts"
+        "src/**/*.ts"
     ],
     "exclude": [
         "node_modules",
