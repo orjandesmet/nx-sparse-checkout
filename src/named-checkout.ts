@@ -48,11 +48,14 @@ const suggestAppInsteadOfLib = (projectName: string): inquirer.ConfirmQuestion |
     const possibleApps = splittedName
         .slice(1)
         .map((_, i) => {
-            const copy = splittedName.concat();
-            copy.splice(i + 1, 0, 'fe');
-            return copy.join('-');
+            try {
+                return new RegExp(splittedName.concat().slice(0, - (i + 1)).join('-'), 'i');
+            } catch {
+                return null;
+            }
         })
-        .map(possibleName => projectNodes.find(p => p.name === possibleName && p.type === ProjectType.app))
+        .filter(possibleName => !!possibleName)
+        .map(possibleName => projectNodes.find(p => possibleName!.test(p.name) && p.type === ProjectType.app))
         .filter(possibleApp => !!possibleApp);
     if (possibleApps.length) {
         const possibleName = possibleApps[0]!.name;
@@ -60,9 +63,7 @@ const suggestAppInsteadOfLib = (projectName: string): inquirer.ConfirmQuestion |
             from: projectName,
             to: possibleName,
             messageFrom: `${bad(projectName)}`,
-            messageTo: `${good(possibleName.slice(0, possibleName.indexOf('fe-')))}${goodAccent('fe-')}${good(
-                possibleName.slice(possibleName.indexOf('fe-') + 3)
-            )}`
+            messageTo: `${good(possibleName)}`
         });
     } else {
         return null;
