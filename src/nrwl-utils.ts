@@ -1,8 +1,7 @@
+import { NxJson, readNxJson, readWorkspaceJson } from '@nrwl/workspace';
 import { getProjectNodes, getProjectRoots } from '@nrwl/workspace/src/command-line/shared';
-import { readNxJson, readWorkspaceJson } from '@nrwl/workspace/src/core/file-utils';
 import { createProjectGraph } from '@nrwl/workspace/src/core/project-graph';
-import { ProjectType } from '@nrwl/workspace/src/core/project-graph/project-graph-models';
-import { NxJson } from '@nrwl/workspace/src/core/shared-interfaces';
+import { ProjectGraphNode, ProjectType } from '@nrwl/workspace/src/core/project-graph/project-graph-models';
 
 const nxJson: NxJson = readNxJson();
 const workspaceJson = readWorkspaceJson();
@@ -22,8 +21,16 @@ export const concatWithDependencies = (projectNames: string[]): string[] => {
     .filter((item, index, array) => array.indexOf(item) === index);
 }
 
+export const findProject = (projectName: string) => {
+  return projectNodes.find(p => p.name === projectName && isValidProject(p));
+}
+
+export const isValidProject = (project: ProjectGraphNode) => {
+  return !!project.data && project.type !== 'npm'
+}
+
 export const isProject = (projectName: string) => {
-    return projectNodes.some(p => p.name === projectName && p.data && p.type !== 'npm');
+    return !!findProject(projectName);
 }
 
 export const getExcludedProjectRoots = (projectNames: string[]) => {
@@ -32,5 +39,21 @@ export const getExcludedProjectRoots = (projectNames: string[]) => {
 }
 
 export const findApp = (projectName: string) => {
-    return projectNodes.find(p => p.name === projectName && p.type === ProjectType.app);
+    return projectNodes.find(p => p.name === projectName && isApp(p));
+}
+
+export const findAppLike = (projectName: RegExp) => {
+  return projectNodes.find(p => projectName.test(p.name) && isApp(p));
+}
+
+export const isApp = (project: ProjectGraphNode) => {
+  return project.type === ProjectType.app;
+}
+
+export const isE2e = (project: ProjectGraphNode) => {
+  return project.type === ProjectType.e2e;
+}
+
+export const isLib = (project: ProjectGraphNode) => {
+  return project.type === ProjectType.lib;
 }

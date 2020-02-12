@@ -1,11 +1,9 @@
-import { ProjectGraphNode } from '@nrwl/workspace/src/core/project-graph';
-import { ProjectType } from '@nrwl/workspace/src/core/project-graph/project-graph-models';
 import * as colors from 'colors';
 import * as inquirer from 'inquirer';
 import * as yargs from 'yargs';
-import { projectNodes } from './nrwl-utils';
+import { isApp, isLib, isValidProject, projectNodes } from './nrwl-utils';
 
-function generateChoiceGroup(name: string, projects: ProjectGraphNode[], selected: string[], all: boolean) {
+function generateChoiceGroup(name: string, projects: {type: string, name: string}[], selected: string[], all: boolean) {
     return !projects.length
         ? []
         : [
@@ -23,18 +21,18 @@ const generateSelectionList = (selected: string[] = [], terms: string[] = [], al
     try {
         regExp = new RegExp(terms.concat(selected).join('|'), 'i');
     } catch {}
-    let selectableProjects = projectNodes.filter(p => !terms.length || !regExp || regExp.test(p.name));
+    let selectableProjects = projectNodes.filter(p => (!terms.length || !regExp || regExp.test(p.name)) && isValidProject(p));
     if (!selectableProjects.length) {
-        selectableProjects = projectNodes;
+        selectableProjects = projectNodes.filter(isValidProject);
     }
 
-    const apps = selectableProjects.filter(p => p.type === ProjectType.app);
-    const libs = selectableProjects.filter(p => p.type === ProjectType.lib);
-    const others = selectableProjects.filter(p => ![ProjectType.app.toString(), ProjectType.lib.toString(), 'npm'].includes(p.type));
+    const apps = selectableProjects.filter(p => isApp(p));
+    const libs = selectableProjects.filter(p => isLib(p));
+    const others = selectableProjects.filter(p => !isApp(p) && !isLib(p));
 
     return [{
         type: 'checkbox',
-        message: 'select something',
+        message: 'Select the projects to checkout',
         name: 'projectNames',
         choices: [
             ...generateChoiceGroup('Applications', apps, selected, all),

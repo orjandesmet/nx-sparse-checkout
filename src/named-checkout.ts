@@ -1,9 +1,8 @@
-import { ProjectType } from '@nrwl/workspace/src/core/project-graph/project-graph-models';
 import * as colors from 'colors';
 import * as inquirer from 'inquirer';
 import * as yargs from 'yargs';
 import { checkoutInteractive } from './interactive-checkout';
-import { isProject, projectNodes } from './nrwl-utils';
+import { findApp, findAppLike, findProject, isE2e, isLib, isProject } from './nrwl-utils';
 
 const good = colors.green;
 const bad = colors.magenta;
@@ -33,7 +32,7 @@ const createConfirmQuestion = ({
 
 const suggestAppInsteadOfE2e = (projectName: string): inquirer.ConfirmQuestion | null => {
     const possibleName = projectName.slice(0, -4);
-    const possibleApp = projectNodes.find(p => p.name === possibleName && p.type === ProjectType.app);
+    const possibleApp = findApp(possibleName);
     return possibleApp ?
         createConfirmQuestion({
             from: projectName,
@@ -55,7 +54,7 @@ const suggestAppInsteadOfLib = (projectName: string): inquirer.ConfirmQuestion |
             }
         })
         .filter(possibleName => !!possibleName)
-        .map(possibleName => projectNodes.find(p => possibleName!.test(p.name) && p.type === ProjectType.app))
+        .map(possibleName => findAppLike(possibleName!))
         .filter(possibleApp => !!possibleApp);
     if (possibleApps.length) {
         const possibleName = possibleApps[0]!.name;
@@ -72,13 +71,14 @@ const suggestAppInsteadOfLib = (projectName: string): inquirer.ConfirmQuestion |
 
 function generateDidYouMeanQuestions(projectNames: string[]) {
     return projectNames
-        .map(projectName => projectNodes.find(p => p.name === projectName))
+        .map(projectName => findProject(projectName))
+        .filter(project => !!project)
         .map(project => {
-            switch (project!.type) {
-                case ProjectType.e2e: {
+            switch (true) {
+                case isE2e(project!): {
                     return suggestAppInsteadOfE2e(project!.name);
                 }
-                case ProjectType.lib: {
+                case isLib(project!): {
                     return suggestAppInsteadOfLib(project!.name);
                 }
                 default:
