@@ -20,6 +20,9 @@ async function runNxSparseCheckout(args: yargs.Arguments) {
     process.exit(1);
   }
 
+  console.log('Checking out everything first...');
+  doCheckout([]);
+
   let selectedProjectNames: string[] = [];
   if (args._.length) {
     selectedProjectNames = await checkoutProjectsByName(args);
