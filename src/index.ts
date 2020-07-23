@@ -7,6 +7,10 @@ import { checkoutProjectsByName } from './named-checkout';
 import { concatWithDependencies, getExcludedProjectRoots } from './nrwl-utils';
 
 async function runNxSparseCheckout(args: yargs.Arguments) {
+  if (args.v) {
+    console.log(require('../package.json').version);
+    process.exit(0);
+  }
   if (!isGitStatusClean()) {
     console.log(colors.red('You have unstaged changes. Stash or commit them first.'));
     process.exit(1);
@@ -51,6 +55,7 @@ const argv = yargs
   .boolean(['i', 'a'])
   .alias('i', 'interactive')
   .alias('a', 'all')
+  .alias('v', 'version')
   .describe({ i: 'run interactive', a: 'select all' })
   .help('help').argv;
 
