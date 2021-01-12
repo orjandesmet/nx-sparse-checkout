@@ -8,6 +8,7 @@ Tested to work with the following [nrwl/nx](https://github.com/nrwl/nx) versions
 - 8
 - 9
 - 10
+- 11 (only v2.0.0)
 
 It lists all apps and libraries in the workspace using nx's technologies. Dependent projects are automatically added to the list of projects to check out, based on nx's dependency graph.
 

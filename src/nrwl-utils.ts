@@ -1,12 +1,13 @@
 import { NxJson, readNxJson, readWorkspaceJson } from '@nrwl/workspace';
-import { getProjectNodes, getProjectRoots } from '@nrwl/workspace/src/command-line/shared';
+import { getProjectRoots } from '@nrwl/workspace/src/command-line/shared';
+import { } from '@nrwl/workspace/src/command-line/utils';
 import { createProjectGraph } from '@nrwl/workspace/src/core/project-graph';
 import { ProjectGraphNode, ProjectType } from '@nrwl/workspace/src/core/project-graph/project-graph-models';
 
 const nxJson: NxJson = readNxJson();
 const workspaceJson = readWorkspaceJson();
-export const projectNodes = getProjectNodes(workspaceJson, nxJson);
-const projectGraph = createProjectGraph();
+const projectGraph = createProjectGraph(workspaceJson, nxJson);
+export const projectNodes = Object.values(projectGraph.nodes);
 export const dependencies = projectGraph.dependencies;
 
 export const concatWithDependencies = (projectNames: string[]): string[] => {

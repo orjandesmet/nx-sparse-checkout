@@ -1,0 +1,36 @@
+{
+  "npmScope": "example",
+  "affected": { "defaultBase": "master" },
+  "implicitDependencies": {
+    "workspace.json": "*",
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
+    "tsconfig.base.json": "*",
+    "tslint.json": "*",
+    ".eslintrc.json": "*",
+    "nx.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": { "cacheableOperations": ["build", "lint", "test", "e2e"] }
+    }
+  },
+  "projects": {
+    "some-angular-app": { "tags": [] },
+    "some-angular-app-e2e": {
+      "tags": [],
+      "implicitDependencies": ["some-angular-app"]
+    },
+    "ng-lib": { "tags": [] },
+    "some-react-app": { "tags": [] },
+    "some-react-app-e2e": {
+      "tags": [],
+      "implicitDependencies": ["some-react-app"]
+    },
+    "second-app": { "tags": [] },
+    "second-app-e2e": { "tags": [], "implicitDependencies": ["second-app"] },
+    "some-react-lib": { "tags": [] },
+    "dependent-lib": { "tags": [] },
+    "test-lib": { "tags": [] }
+  }
+}
