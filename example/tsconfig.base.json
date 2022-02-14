@@ -16,9 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@example/ng-lib": ["libs/ng-lib/src/index.ts"],
-      "@example/some-react-lib": ["libs/some-react-lib/src/index.ts"],
-      "@example/dependent-lib": ["libs/dependent-lib/src/index.ts"],
-      "@example/test-lib": ["libs/test-lib/src/index.ts"]
+      "@example/react-lib": ["libs/react-lib/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

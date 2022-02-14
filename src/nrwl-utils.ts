@@ -1,12 +1,7 @@
-import { NxJson, readNxJson, readWorkspaceJson } from '@nrwl/workspace';
 import { getProjectRoots } from '@nrwl/workspace/src/command-line/shared';
-import { } from '@nrwl/workspace/src/command-line/utils';
-import { createProjectGraph } from '@nrwl/workspace/src/core/project-graph';
-import { ProjectGraphNode, ProjectType } from '@nrwl/workspace/src/core/project-graph/project-graph-models';
+import { readCachedProjectGraph, ProjectGraphNode } from '@nrwl/workspace/src/core/project-graph';
 
-const nxJson: NxJson = readNxJson();
-const workspaceJson = readWorkspaceJson();
-const projectGraph = createProjectGraph(workspaceJson, nxJson);
+const projectGraph = readCachedProjectGraph();
 export const projectNodes = Object.values(projectGraph.nodes);
 export const dependencies = projectGraph.dependencies;
 
@@ -48,13 +43,13 @@ export const findAppLike = (projectName: RegExp) => {
 }
 
 export const isApp = (project: ProjectGraphNode) => {
-  return project.type === ProjectType.app;
+  return project.type === 'app';
 }
 
 export const isE2e = (project: ProjectGraphNode) => {
-  return project.type === ProjectType.e2e;
+  return project.type === 'e2e';
 }
 
 export const isLib = (project: ProjectGraphNode) => {
-  return project.type === ProjectType.lib;
+  return project.type === 'lib';
 }

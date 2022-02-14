@@ -1,9 +1,14 @@
 {
   "npmScope": "example",
-  "affected": { "defaultBase": "master" },
+  "affected": {
+    "defaultBase": "master"
+  },
   "implicitDependencies": {
     "workspace.json": "*",
-    "package.json": { "dependencies": "*", "devDependencies": "*" },
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
     "tsconfig.base.json": "*",
     "tslint.json": "*",
     ".eslintrc.json": "*",
@@ -12,25 +17,53 @@
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
-      "options": { "cacheableOperations": ["build", "lint", "test", "e2e"] }
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ],
+        "parallel": 3
+      }
     }
   },
-  "projects": {
-    "some-angular-app": { "tags": [] },
-    "some-angular-app-e2e": {
-      "tags": [],
-      "implicitDependencies": ["some-angular-app"]
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "generators": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
     },
-    "ng-lib": { "tags": [] },
-    "some-react-app": { "tags": [] },
-    "some-react-app-e2e": {
-      "tags": [],
-      "implicitDependencies": ["some-react-app"]
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
     },
-    "second-app": { "tags": [] },
-    "second-app-e2e": { "tags": [], "implicitDependencies": ["second-app"] },
-    "some-react-lib": { "tags": [] },
-    "dependent-lib": { "tags": [] },
-    "test-lib": { "tags": [] }
-  }
+    "@nrwl/angular:component": {
+      "style": "css"
+    },
+    "@nrwl/react": {
+      "application": {
+        "style": "css",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "css"
+      },
+      "library": {
+        "style": "css",
+        "linter": "eslint"
+      }
+    }
+  },
+  "defaultProject": "some-angular-app"
 }

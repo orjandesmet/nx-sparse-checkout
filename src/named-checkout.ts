@@ -90,7 +90,7 @@ function generateDidYouMeanQuestions(projectNames: string[]) {
 
 export const checkoutProjectsByName = async (args: yargs.Arguments): Promise<string[]> => {
 
-    const projects = args._.map(projectName => ({ projectName, exists: isProject(projectName) }));
+    const projects = (args._ as string[]).map(projectName => ({ projectName, exists: isProject(projectName) }));
     const existingProjectNames = projects.filter(p => p.exists).map(p => p.projectName);
     const nonExistingProjectNames = projects.filter(p => !p.exists).map(p => p.projectName);
 
