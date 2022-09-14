@@ -1,5 +1,4 @@
-import { getProjectRoots } from '@nrwl/workspace/src/command-line/shared';
-import { readCachedProjectGraph, ProjectGraphNode } from '@nrwl/workspace/src/core/project-graph';
+import { ProjectGraphProjectNode, ProjectConfiguration, readCachedProjectGraph, ProjectGraphExternalNode } from '@nrwl/devkit';
 
 const projectGraph = readCachedProjectGraph();
 export const projectNodes = Object.values(projectGraph.nodes);
@@ -21,8 +20,8 @@ export const findProject = (projectName: string) => {
   return projectNodes.find(p => p.name === projectName && isValidProject(p));
 }
 
-export const isValidProject = (project: ProjectGraphNode) => {
-  return !!project.data && project.type !== 'npm'
+export const isValidProject = (project: ProjectGraphProjectNode<ProjectConfiguration> | ProjectGraphExternalNode): project is ProjectGraphProjectNode<ProjectConfiguration> => {
+  return !!project.data && project.type !== "npm";
 }
 
 export const isProject = (projectName: string) => {
@@ -30,8 +29,7 @@ export const isProject = (projectName: string) => {
 }
 
 export const getExcludedProjectRoots = (projectNames: string[]) => {
-    const excludedProjects = projectNames.length ? projectNodes.filter(p => isProject(p.name) && !projectNames.includes(p.name)).map(p => p.name) : [];
-    return getProjectRoots(excludedProjects);
+    return projectNames.length ? projectNodes.filter(p => isProject(p.name) && !projectNames.includes(p.name)).map(p => p.data.root) : [];
 }
 
 export const findApp = (projectName: string) => {
@@ -42,14 +40,14 @@ export const findAppLike = (projectName: RegExp) => {
   return projectNodes.find(p => projectName.test(p.name) && isApp(p));
 }
 
-export const isApp = (project: ProjectGraphNode) => {
+export const isApp = (project: ProjectGraphProjectNode<ProjectConfiguration>) => {
   return project.type === 'app';
 }
 
-export const isE2e = (project: ProjectGraphNode) => {
+export const isE2e = (project: ProjectGraphProjectNode<ProjectConfiguration>) => {
   return project.type === 'e2e';
 }
 
-export const isLib = (project: ProjectGraphNode) => {
+export const isLib = (project: ProjectGraphProjectNode<ProjectConfiguration>) => {
   return project.type === 'lib';
 }

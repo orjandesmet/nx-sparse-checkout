@@ -41,6 +41,7 @@
     "@nrwl/workspace": ">= 14.0.0 < 15.0.0"
   },
   "devDependencies": {
+    "@nrwl/devkit": "^14.0.0",
     "@nrwl/workspace": "^14.0.0",
     "@types/inquirer": "^6.5.0",
     "@types/minimist": "^1.2.1",
