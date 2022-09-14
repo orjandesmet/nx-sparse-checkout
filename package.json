@@ -1,6 +1,6 @@
 {
   "name": "nx-sparse-checkout",
-  "version": "14.0.0-beta.0",
+  "version": "14.0.0",
   "description": "Tool to use sparse checkout in big monorepos created using Nrwl/nx",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
