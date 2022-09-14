@@ -39,3 +39,19 @@ All these parameters are optional
 |names...|Checks out those names of projects. If a name is not found, interactive mode is started|
 
 ![Example Commands](./readme-assets/example.gif)
+
+## Contributing
+
+1. Install packages in example
+2. Remove package nx-sparse-checkout
+3. Update version number of nx-sparse-checkout in package.json
+4. Do changes in nx-sparse-checkout code
+5. pnpm build
+6. pnpm pack
+7. In example, add devDependency "npm install -D ../nx-sparse-checkout-....tgz"
+8. Test
+9. If it works, remove beta tag from package.json
+10. pnpm build
+11. npm publish
+12. Update dependency in example to published version
+13. Create PR
