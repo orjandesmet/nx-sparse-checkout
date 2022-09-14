@@ -21,7 +21,7 @@
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/ng-lib"],
           "options": {
-            "jestConfig": "libs/ng-lib/jest.config.js",
+            "jestConfig": "libs/ng-lib/jest.config.ts",
             "passWithNoTests": true
           }
         }
@@ -44,7 +44,7 @@
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/react-lib"],
           "options": {
-            "jestConfig": "libs/react-lib/jest.config.js",
+            "jestConfig": "libs/react-lib/jest.config.ts",
             "passWithNoTests": true
           }
         }
@@ -90,6 +90,12 @@
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false
+            },
+            "development": {
+              "extractLicenses": false,
+              "optimization": false,
+              "sourceMap": true,
+              "vendorChunk": true
             }
           }
         },
@@ -103,8 +109,12 @@
             "production": {
               "buildTarget": "second-angular-app:build:production",
               "hmr": false
+            },
+            "development": {
+              "buildTarget": "second-angular-app:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
@@ -117,7 +127,7 @@
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/second-angular-app"],
           "options": {
-            "jestConfig": "apps/second-angular-app/jest.config.js",
+            "jestConfig": "apps/second-angular-app/jest.config.ts",
             "passWithNoTests": true
           }
         }
@@ -192,6 +202,12 @@
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false
+            },
+            "development": {
+              "extractLicenses": false,
+              "optimization": false,
+              "sourceMap": true,
+              "vendorChunk": true
             }
           }
         },
@@ -205,8 +221,12 @@
             "production": {
               "buildTarget": "second-react-app:build:production",
               "hmr": false
+            },
+            "development": {
+              "buildTarget": "second-react-app:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
@@ -219,7 +239,7 @@
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/second-react-app"],
           "options": {
-            "jestConfig": "apps/second-react-app/jest.config.js",
+            "jestConfig": "apps/second-react-app/jest.config.ts",
             "passWithNoTests": true
           }
         }
@@ -339,7 +359,7 @@
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/some-angular-app"],
           "options": {
-            "jestConfig": "apps/some-angular-app/jest.config.js",
+            "jestConfig": "apps/some-angular-app/jest.config.ts",
             "passWithNoTests": true
           }
         }
@@ -414,6 +434,12 @@
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false
+            },
+            "development": {
+              "extractLicenses": false,
+              "optimization": false,
+              "sourceMap": true,
+              "vendorChunk": true
             }
           }
         },
@@ -427,8 +453,12 @@
             "production": {
               "buildTarget": "some-react-app:build:production",
               "hmr": false
+            },
+            "development": {
+              "buildTarget": "some-react-app:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
@@ -441,7 +471,7 @@
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/some-react-app"],
           "options": {
-            "jestConfig": "apps/some-react-app/jest.config.js",
+            "jestConfig": "apps/some-react-app/jest.config.ts",
             "passWithNoTests": true
           }
         }
@@ -477,5 +507,6 @@
       "tags": [],
       "implicitDependencies": ["some-react-app"]
     }
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }
