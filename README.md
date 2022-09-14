@@ -8,8 +8,9 @@ Tested to work with the following [nrwl/nx](https://github.com/nrwl/nx) versions
 - 8
 - 9
 - 10
-- 11 (only v2+)
-- 13 (only v3+)
+- 11 (only nx-sparse-checkout@^2.0.0)
+- 13 (only nx-sparse-checkout@^3.0.0)
+- 14 (only nx-sparse-checkout@^14.0.0) -> Aligned version numbers
 
 It lists all apps and libraries in the workspace using nx's technologies. Dependent projects are automatically added to the list of projects to check out, based on nx's dependency graph.
 
