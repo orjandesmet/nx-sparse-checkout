@@ -1,6 +1,6 @@
 {
   "name": "nx-sparse-checkout",
-  "version": "3.0.0",
+  "version": "14.0.0-beta.0",
   "description": "Tool to use sparse checkout in big monorepos created using Nrwl/nx",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -38,10 +38,10 @@
     "yargs": "^15.4.1"
   },
   "peerDependencies": {
-    "@nrwl/workspace": ">= 13.0.0 < 14.0.0"
+    "@nrwl/workspace": ">= 14.0.0 < 15.0.0"
   },
   "devDependencies": {
-    "@nrwl/workspace": "^13.0.0",
+    "@nrwl/workspace": "^14.0.0",
     "@types/inquirer": "^6.5.0",
     "@types/minimist": "^1.2.1",
     "@types/node": "^13.5.0",
